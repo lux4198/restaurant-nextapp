@@ -3,19 +3,73 @@
 
 :root{
 
-  /* color scheme */
+/* color scheme */
 
-  --col-prim-beaver :  rgb(158, 127, 102); 
-  --col-prim-codgray :  rgb(17, 17, 17); 
+--col-prim-beaver :  rgb(158, 127, 102); 
+--col-prim-codgray :  rgb(17, 17, 17); 
 
-  --col-sec-mirage : rgb(23, 25, 43); 
-  --col-sec-ebonyclay : rgb(36, 43, 55); 
-  --col-sec-shuttlegray : rgb(92, 103, 121); 
+--col-sec-mirage : rgb(23, 25, 43); 
+--col-sec-ebonyclay : rgb(36, 43, 55); 
+--col-sec-shuttlegray : rgb(92, 103, 121); 
 
-  
+/* typography */
 
+--font-family-main : League Spartan; 
+
+/* font weights */
+
+--font-prim-light : 300; 
+--font-prim-regular : 400; 
+--font-prim-semibold : 600; 
+--font-prim-bold : 700; 
+
+
+font-family: var(--font-family-main);
 }
 
+
+h1{
+  font-weight: var(--font-prim-light);
+  font-size: 80px;
+  line-height: 80px;
+  letter-spacing: 0.1ch;
+}
+
+h2{
+  font-weight: var(--font-prim-bold);
+  font-size: 48px;
+  line-height: 48px;
+  letter-spacing: 0.05ch;
+}
+
+h3{
+  font-weight: var(--font-prim-bold);
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0.025ch;
+}
+
+h4{
+  font-weight: var(--font-prim-semibold);
+  font-size: 17px;
+  line-height: 28px;
+  letter-spacing: 0.5ch;
+  text-transform: uppercase;
+}
+
+/* following tags are used for body text */
+
+p{
+  font-weight: var(--font-prim-regular);
+  font-size: 20px;
+  line-height: 30px;
+}
+
+.paragraph-secondary{
+  font-weight: var(--font-prim-regular);
+  font-size: 16px;
+  line-height: 26px;
+}
 
 
 /* CSS RESET */
