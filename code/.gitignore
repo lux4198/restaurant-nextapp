@@ -37,4 +37,4 @@ next-env.d.ts
 
 # database for development
 
-/data
+# /data

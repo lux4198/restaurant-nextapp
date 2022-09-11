@@ -1,12 +1,15 @@
 /* this is the admin page that lists the reservations in the database */
 
 import React from 'react'
+import db from '../../data/db.json'
 
 export async function getStaticProps(context){
 
-    const res = await fetch(`http://localhost:3000/api/reservations/?method=GET`)
+    // const res = await fetch(`http://localhost:3000/api/reservations/?method=GET`)
 
-    const reservations = await res.json()
+    // const reservations = await res.json()
+
+    const reservations = db
 
     return {
         props : {
