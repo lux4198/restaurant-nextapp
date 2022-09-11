@@ -1,27 +1,28 @@
+/* this page lets the user make a reservation which is processed in the corresponding api node */
+
 import React from 'react'
-import styles from '../styles/Reservations.module.css'
-import db from '../data/db.json'
+import styles from '../../styles/Reservations.module.css'
 
 function Reservations() {
     const handleSubmit = async (event) => {
-        console.log(db)
+
         // Stop the form from submitting and refreshing the page.
         event.preventDefault()
 
         // Get data from the form.
         const data = {
-        Name: event.target.Name.value,
-        Email: event.target.Email.value,
-        PeopleNum: event.target.PeopleNum.value,
-        Date: event.target.Date.value,
-        Time: event.target.Time.value,
+            Name: event.target.Name.value,
+            Email: event.target.Email.value,
+            PeopleNum: event.target.PeopleNum.value,
+            Date: event.target.Date.value,
+            Time: event.target.Time.value,
         }
 
         // Send the data to the server in JSON format.
         const JSONdata = JSON.stringify(data)
 
         // API endpoint where we send form data.
-        const endpoint = '/api/reservations_form'
+        const endpoint = '/api/reservations/'
 
         // Form the request for sending data to the server.
         const options = {
@@ -41,7 +42,7 @@ function Reservations() {
         // Get the response data from server as JSON.
         // If server returns the name submitted, that means the form works.
         const result = await response.json()
-        console.log(result)
+        
         // window.location.replace("/")
     }
     return (
