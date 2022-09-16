@@ -26,18 +26,32 @@ export default function getResIDs(req, res){
                                 Name : body.Name, 
                                 Email : body.Email,
                                 PeopleNum : body.PeopleNum,
-                                Time : body.Time,
-                                Date : body.Date,
+                                ReservationTime : body.Time,
+                                ReservationDate : body.Date,
                                 validated : false, 
+                                VALIDATIONID : Math.random().toString(16).slice(2).concat('', Math.random().toString(16).slice(2)),
+                                VALIDATIONTIME : new Date().getTime()
                             }
 
         create(reservation)
 
         // Found the name.
         // Sends a HTTP success code
-        res.status(200).json(reservation)
+        res.status(200).send('Reservation made.')
         
         console.log('POST request to api/reservations')
+
+        // send mail containing confirmation link
+
+        const options = {
+            // The method is POST because we are sending data.
+            method: 'POST',
+            // Tell the server we're sending JSON.
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            // Body of the request is the JSON data we created above.
+            body: JSON.stringify(reservation),
     }
 
     else if (req.method === 'GET'){
