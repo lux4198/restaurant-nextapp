@@ -1,7 +1,6 @@
 /* this is the admin page that lists the reservations in the database */
 
 import React from 'react'
-import db from '../../data/db.json'
 
 export async function getStaticProps(context){
 
@@ -9,8 +8,7 @@ export async function getStaticProps(context){
 
     // const reservations = await res.json()
 
-    const reservations = db
-
+    const reservations = []
     return {
         props : {
             data : reservations, 

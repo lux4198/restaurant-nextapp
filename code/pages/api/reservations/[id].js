@@ -1,8 +1,10 @@
 /* this api node processes requests for a specific reservation e.g. validation or changes / deletion */
 
-import db from '../../../data/db.json' 
-import { validate } from '../../../helpers/reservations-helpers';
+import { findReservations, updateReservationById } from "../../../helpers/reservations-helpers"
+import { connectToDatabase } from "../../../lib/mongodb"
 
+
+// function returns hourly difference between two unix time stamps
 function getHourDifference(time){
     const currentTime = new Date().getTime()
 
@@ -10,39 +12,47 @@ function getHourDifference(time){
 }
 
 
-export default async function getResID(req, res){
-    const data = db
+export default async function handler(req, res){
+    const { db } = await connectToDatabase()
     const id = req.query.id
+    const VALIDATIONID = req.query.valID
 
     // check database for entry with given ID
 
-    const reservationList = data.filter( (reservation) => {
-        if (reservation.VALIDATIONID === id){
-            return reservation  
-        }
-    })
+    const [reservation] = await findReservations(db, id)
 
-    const reservation = reservationList[0]
+    // if correct id is found return JSON object
+    if(reservation._id.toString() === id){
+
+         // if ID is found check for validation query and compare query id to id in database
     
-    // guard clause if ID is not found send 404
+        if ((req.query.validate === 'true')){
 
-    if (reservation === undefined){
-        res.send('ID doesnt exist')
-    }
+            // check for correct validationID
 
-    // if ID is found check for validation query and compare query id to id in database
-    
-    else if ((req.query.validate === 'true') && reservation.VALIDATIONID === id){
+            if (reservation.VALIDATIONID === VALIDATIONID){
 
-        // if validation link is not clicked within 24 hours validation is no longer possible
+                // if validation link is not clicked within 24 hours validation is no longer possible
 
-        if((getHourDifference(reservation.VALIDATIONTIME) < 24) && (getHourDifference(reservation.VALIDATIONTIME) > 0)){
-            validate(id)
-            res.redirect(307, '/reservations/confirmation')
+                if((getHourDifference(reservation.VALIDATIONTIME) < 24) && (getHourDifference(reservation.VALIDATIONTIME) > 0)){
+                    updateReservationById(db, id, {...reservation, validated : true})
+                    res.redirect(307, '/reservations/confirmation')
+                }
+                else{
+                    res.send('Your confirmation link has expired, please make a new reservation.')
+                }
+            }
+
+            else{
+                res.send('Please provide correct validation id.')
+            }
         }
+
         else{
-            res.send('Your confirmation link has expired, please make a new reservation.')
+            res.json(reservation)
         }
+
+
     }
 
     else{

@@ -38,3 +38,8 @@ next-env.d.ts
 # database for development
 
 # /data
+
+/data/sendgrid.txt
+
+/lib
+*mongodb.js

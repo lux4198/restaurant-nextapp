@@ -1,5 +1,8 @@
-import db from '../../../data/db.json' 
-import { create } from '../../../helpers/reservations-helpers'
+import { insertReservation } from '../../../helpers/reservations-helpers'
+import { connectToDatabase } from '../../../lib/mongodb.js'
+
+const mail = require('@sendgrid/mail');
+mail.setApiKey(process.env.SENDGRID_API_KEY);
 
 String.prototype.createHash = function() {
     var hash = 0, i, chr;
@@ -13,18 +16,20 @@ String.prototype.createHash = function() {
   };
 
 export default async function getResIDs(req, res){
-    const data = db
+    const { db } = await connectToDatabase();
 
     if (req.method === 'POST'){
+
+        console.log('POST request to api/reservations')
+
         // Get data submitted in request's body.
         const body = req.body
 
         // Optional logging to see the responses
         // in the command line where next.js app is running.
-        console.log('body: ', body)
+        // console.log('body: ', body)
 
-        // Guard clause checks completness of entered data,
-        // and returns early if they are not found
+        // Guard clause checks completeness of entered data and returns early if they are not found
         if (!body.Name || !body.Email || !body.PeopleNum || !body.Date || !body.Time) {
             // Sends a HTTP bad request error code
             return res.status(400).json({ data: 'Name or Email not found' })
@@ -38,9 +43,8 @@ export default async function getResIDs(req, res){
             return
         }
 
-        // save data to the database
-
-        const reservation = {   ID : Math.random().toString(16).slice(2),
+        const reservation = {   
+                                ID : Math.random().toString(16).slice(2),
                                 Name : body.Name, 
                                 Email : body.Email,
                                 PeopleNum : body.PeopleNum,
@@ -51,32 +55,34 @@ export default async function getResIDs(req, res){
                                 VALIDATIONTIME : new Date().getTime()
                             }
 
-        // console.log(reservation)
-        create(reservation)
-
-        // Found the name.
-        // Sends a HTTP success code
-        res.status(200).send('Reservation made.')
-        
-        console.log('POST request to api/reservations')
+        // make POST request to database 
+        const POSTresult = await insertReservation(db, reservation)
 
         // send mail containing confirmation link
 
-        const options = {
-            // The method is POST because we are sending data.
-            method: 'POST',
-            // Tell the server we're sending JSON.
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            // Body of the request is the JSON data we created above.
-            body: JSON.stringify(reservation),
-            }
+        const message = `
+            Dear ${POSTresult.Name}, rn
+            rn
+            Thanks for making a reservation with us! Please confirm your Reservation Details below. rn
+            rn
+            Date: ${POSTresult.ReservationDate} rn
+            Time: ${POSTresult.ReservationTime} rn
+            People: ${POSTresult.PeopleNum} rn
+            Confirm Reservation: rn
+            http://localhost:3000/api/reservations/${POSTresult._id}?valID=${POSTresult.VALIDATIONID}&validate=true
 
-        const response = await fetch(`http://localhost:3000/api/reservations/mail`, options)
-        const result = await response.text()
-        console.log('response', result)
-    }
+            `;
+    
+        // mail.send({
+        //     to: POSTresult.Email,
+        //     from: 'reservations@em5137.compounder.dev',
+        //     subject: 'Reservation Confirmation',
+        //     text: message,
+        //     html: message.replace(/rn/g, '<br>'),
+        //     }).then(() => {
+        //         res.status(200).json({ status: 'Ok' });
+        //     });
+        }
 
     else {
         res.status(405).send({ message: 'Please use an appropriate HTTP method.' })
