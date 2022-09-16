@@ -3,6 +3,17 @@
 import React from 'react'
 import styles from '../../styles/Reservations.module.css'
 
+String.prototype.createHash = function() {
+    var hash = 0, i, chr;
+    if (this.length === 0) return hash;
+    for (i = 0; i < this.length; i++) {
+      chr   = this.charCodeAt(i);
+      hash  = ((hash << 5) - hash) + chr;
+      hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
+  };
+
 function Reservations() {
     const handleSubmit = async (event) => {
 
@@ -16,7 +27,10 @@ function Reservations() {
             PeopleNum: event.target.PeopleNum.value,
             Date: event.target.Date.value,
             Time: event.target.Time.value,
+            hash : event.target.Name.value.concat('', event.target.Email.value).createHash()
         }
+
+        console.log(data)
 
         // Send the data to the server in JSON format.
         const JSONdata = JSON.stringify(data)
@@ -38,10 +52,11 @@ function Reservations() {
 
         // Send the form data to our forms API on Vercel and get a response.
         const response = await fetch(endpoint, options)
-
+        const result = await response.text()
+        console.log(result)
         // Get the response data from server as JSON.
         // If server returns the name submitted, that means the form works.
-        const result = await response.json()
+        // const result = await response.json()
         
         // window.location.replace("/")
     }

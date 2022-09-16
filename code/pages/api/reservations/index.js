@@ -1,8 +1,18 @@
 import db from '../../../data/db.json' 
 import { create } from '../../../helpers/reservations-helpers'
 
+String.prototype.createHash = function() {
+    var hash = 0, i, chr;
+    if (this.length === 0) return hash;
+    for (i = 0; i < this.length; i++) {
+      chr   = this.charCodeAt(i);
+      hash  = ((hash << 5) - hash) + chr;
+      hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
+  };
 
-export default function getResIDs(req, res){
+export default async function getResIDs(req, res){
     const data = db
 
     if (req.method === 'POST'){
@@ -20,6 +30,14 @@ export default function getResIDs(req, res){
             return res.status(400).json({ data: 'Name or Email not found' })
         }
 
+        // check for hash code; this ensures that api requests are only made through 
+        // the front end which uses the correct hash function and not by 3. parties
+
+        else if (body.hash !== body.Name.concat('', body.Email).createHash()){
+            res.send('Failed to process reservation.')
+            return
+        }
+
         // save data to the database
 
         const reservation = {   ID : Math.random().toString(16).slice(2),
@@ -33,6 +51,7 @@ export default function getResIDs(req, res){
                                 VALIDATIONTIME : new Date().getTime()
                             }
 
+        // console.log(reservation)
         create(reservation)
 
         // Found the name.
@@ -52,14 +71,14 @@ export default function getResIDs(req, res){
             },
             // Body of the request is the JSON data we created above.
             body: JSON.stringify(reservation),
-    }
+            }
 
-    else if (req.method === 'GET'){
-        console.log('GET request to api/reservations')
-        res.status(200).json(data)
+        const response = await fetch(`http://localhost:3000/api/reservations/mail`, options)
+        const result = await response.text()
+        console.log('response', result)
     }
 
     else {
-        res.status(405).send({ message: 'Please use appropriate HTTP method.' })
+        res.status(405).send({ message: 'Please use an appropriate HTTP method.' })
     }
 }
