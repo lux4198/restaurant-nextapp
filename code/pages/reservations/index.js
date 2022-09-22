@@ -1,6 +1,6 @@
 /* this page lets the user make a reservation which is processed in the corresponding api node */
 
-import React from 'react'
+import React, { useState } from 'react'
 import styles from '../../styles/Reservations.module.css'
 
 String.prototype.createHash = function() {
@@ -15,6 +15,8 @@ String.prototype.createHash = function() {
   };
 
 function Reservations() {
+    const [people, setPeople] = useState(4)
+
     const handleSubmit = async (event) => {
 
         // Stop the form from submitting and refreshing the page.
@@ -53,7 +55,8 @@ function Reservations() {
         // Send the form data to our forms API on Vercel and get a response.
         const response = await fetch(endpoint, options)
         const result = await response.text()
-        console.log(result)
+
+        // console.log(result)
         // Get the response data from server as JSON.
         // If server returns the name submitted, that means the form works.
         // const result = await response.json()
@@ -61,27 +64,45 @@ function Reservations() {
         // window.location.replace("/")
     }
     return (
-        <div className= {styles.wrapper}>
-            <h1>Reservations</h1>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor ="Name">Name:</label>
-                <input type = "text" id = "Name" name = "Name"/>
-                <br/>
-                <label htmlFor ="Email">Email:</label>
-                <input type = "text" id = "Email" name = "Email"/>
-                <br/>
-                <label htmlFor ="Date">Date:</label>
-                <input type = "date" id = "Date" name = "Date"/>
-                <br/>
-                <label htmlFor ="Time">Time:</label>
-                <input type = "time" id = "Time" name = "Time"/>
-                <br/>
-                <label htmlFor ="PeopleNum">PeopleNum:</label>
-                <input type = "number" id = "PeopleNum" name = "PeopleNum"/>
-                <br/>
+        <div className= {styles.pageWrapper}>
+            <div className={styles.background}/>
+            <div className= {styles.heroWrap}>
+                <div className= {styles.heroTextWrap}>
+                    <h1>Reservations</h1>
+                    <p>We can’t wait to host you. If you have any special requirements please feel free to call on the phone number below. We’ll be happy to accommodate you.</p>
+                </div>
+                <div className= {styles.formCard}>
+                    <form onSubmit={handleSubmit}>
+                        <label htmlFor ="Name">Name:</label>
+                        <input type = "text" id = "Name" name = "Name"
+                                placeholder='Name'/>
+                        
+                        <label htmlFor ="Email">Email:</label>
+                        <input type = "text" id = "Email" name = "Email"
+                                placeholder='Email'/>
+                        
+                        <div className= {styles.dateTimeWrap}>
+                            <label className = {styles.show} htmlFor ="Date">Pick A Date</label>
+                            <input type = "date" id = "Date" name = "Date"/>
+                        </div>
+                        <div className= {styles.dateTimeWrap}>
+                            <label className = {styles.show} htmlFor ="Time">Pick A Time</label>
+                            <input type = "time" id = "Time" name = "Time"/>
+                        </div>
+                        
+                        <label htmlFor ="PeopleNum">People:</label>
+                        {/* <input type = "number" id = "PeopleNum" name = "PeopleNum"
+                                placeholder='People'/> */}
 
-                <button type="submit">MAKE RESERVATION</button>
-            </form>
+                        <button type = 'button' onClick= {() => setPeople(people - 1)}>-</button>
+                            <input type = "text" id = "PeopleNum" name = "PeopleNum"  value= {people}/>
+                        <button type = 'button' onClick= {() => setPeople(people + 1)}>+</button>  
+
+                        <button type="submit">MAKE RESERVATION</button>
+
+                    </form>
+                </div>
+            </div>
         </div>
     )
 }

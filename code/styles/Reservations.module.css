@@ -1,3 +1,120 @@
-.wrapper{
-    /* padding: 1em; */
+.pageWrapper{
+    max-width: 1440px;
+    margin: auto;
+    position: relative;
+    padding: 1em;
+}
+
+.background{
+    position: absolute;
+    content: '';
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 600px;
+    z-index: -1;
+    background-image: url(../assets/images/booking/hero-bg-desktop.jpg);
+    
+}
+
+.heroWrap{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    max-width: 1400px;
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.heroTextWrap{
+    color: white;
+    max-width: 490px;
+    padding: 1rem;
+}
+
+.heroTextWrap p{
+    padding : 1rem 0 2rem 0; 
+}
+
+
+.formCard{
+    background-color: white;
+    padding: 2em;
+    /* max-width: 540px; */
+    width: 540px;
+}
+
+.formCard input{
+    width: 100%;
+    padding: 6px 10px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: none;
+    border-bottom: 1px solid var(--col-sec-shuttlegray);
+    outline: none;
+    font-size: 1.2rem;
+    color: var(--col-sec-shuttlegray);
+}
+
+.formCard input:focus{
+    color: var(--col-sec-ebonyclay);
+    border-bottom: 2px solid var(--col-sec-shuttlegray);
+}
+
+.formCard input::placeholder{
+    padding: 2px;
+    color: var(--col-sec-ebonyclay);
+}
+
+.formCard label{
+    display: none;
+}
+
+.formCard .show{
+    display: block;
+    color: var(--col-sec-ebonyclay);
+    font-weight: var(--font-prim-bold);
+}
+
+
+.formCard .dateTimeWrap{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.formCard .dateTimeWrap input{
+    max-width: 75%;
+}
+
+.formCard .dateTimeWrap input::placeholder{
+    text-align: center;
+}
+
+.formCard .dateTimeWrap label{
+    min-width: 20%;
+}
+
+
+
+@media only screen and (min-width : 1100px){
+    .heroWrap{
+        flex-direction: row;
+    }
+}
+
+
+
+@media only screen and (max-width : 800px){
+    .background{
+        background-image: url(../assets/images/booking/hero-bg-tablet.jpg);
+    }
+}
+
+@media only screen and (max-width : 400px){
+    .background{
+        background-image: url(../assets/images/booking/hero-bg-mobile.jpg);
+    }
 }
