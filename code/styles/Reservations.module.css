@@ -97,6 +97,30 @@
     min-width: 20%;
 }
 
+.formCard .peopleInput{
+    position: relative;
+}
+
+.formCard .peopleInput input{
+    text-align: center;
+}
+
+.formCard .peopleInput .buttonLeft{
+    position: absolute;
+    left: 5px;
+    top: 10px;
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+.formCard .peopleInput .buttonRight{
+    position: absolute;
+    right: 5px;
+    top: 10px;
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
 
 
 @media only screen and (min-width : 1100px){

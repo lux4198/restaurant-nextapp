@@ -94,9 +94,11 @@ function Reservations() {
                         {/* <input type = "number" id = "PeopleNum" name = "PeopleNum"
                                 placeholder='People'/> */}
 
-                        <button type = 'button' onClick= {() => setPeople(people - 1)}>-</button>
-                            <input type = "text" id = "PeopleNum" name = "PeopleNum"  value= {people}/>
-                        <button type = 'button' onClick= {() => setPeople(people + 1)}>+</button>  
+                        <div className = {styles.peopleInput}>
+                            <div className= {styles.buttonLeft} onClick= {() => setPeople(people - 1)}>-</div>
+                                <input type = "text" id = "PeopleNum" name = "PeopleNum"  value= {(people > 1)? `${people} People` : `${people} Person`}/>
+                            <div className= {styles.buttonRight}  onClick= {() => setPeople(people + 1)}>+</div>
+                        </div> 
 
                         <button type="submit">MAKE RESERVATION</button>
 
