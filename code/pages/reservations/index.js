@@ -3,6 +3,8 @@
 import React, { useState } from 'react'
 import styles from '../../styles/Reservations.module.css'
 
+import iconMinus from '/public/static/images/icons/icon-minus.svg'
+
 String.prototype.createHash = function() {
     var hash = 0, i, chr;
     if (this.length === 0) return hash;
@@ -95,9 +97,13 @@ function Reservations() {
                                 placeholder='People'/> */}
 
                         <div className = {styles.peopleInput}>
-                            <div className= {styles.buttonLeft} onClick= {() => setPeople(people - 1)}>-</div>
-                                <input type = "text" id = "PeopleNum" name = "PeopleNum"  value= {(people > 1)? `${people} People` : `${people} Person`}/>
-                            <div className= {styles.buttonRight}  onClick= {() => setPeople(people + 1)}>+</div>
+                            <div className= {styles.buttonLeft} onClick= {() => setPeople((people > 1)? people - 1 : people)}>
+                                <img src = {'static/images/icons/icon-minus.svg'} alt = 'iconMinus'/>
+                            </div>
+                                <input type = "text" id = "PeopleNum" name = "PeopleNum"  defaultValue= {(people > 1)? `${people} People` : `${people} Person`}/>
+                            <div className= {styles.buttonRight}  onClick= {() => setPeople((people < 10)? people + 1 : people)}>
+                                <img src = {'static/images/icons/icon-plus.svg'} alt = 'iconPlus'/>
+                            </div>
                         </div> 
 
                         <button type="submit">MAKE RESERVATION</button>
