@@ -1,0 +1,36 @@
+.buttonWrap{
+    padding: 1rem 1rem;
+}
+
+
+.buttonMain{
+    width : max(245px, inherit); 
+    padding: 1rem;
+    letter-spacing: 2.5px;
+    font-weight: var(--font-prim-semibold);
+    font-size: 16px;
+    border: 1.5px solid black;
+    transition: 200ms all ease;
+    cursor: pointer;
+}
+
+.buttonLight{
+    background-color: black;
+    color: white;
+}
+
+
+.buttonLight:hover{
+    background-color: white;
+    color: black;
+}
+
+.buttonDark{
+    background-color: inherit;
+    color: white;
+}
+
+.buttonDark:hover{
+    background-color: white;
+    color: black;
+}
